@@ -259,7 +259,7 @@
     </collision>
   </link>
   <joint
-    name="LF_R_JOIN"
+    name="LF_R_JOINT"
     type="revolute">
     <origin
       xyz="0.122 0 0"

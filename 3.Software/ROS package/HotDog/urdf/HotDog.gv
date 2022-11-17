@@ -1,0 +1,77 @@
+digraph G {
+node [shape=box];
+"BODY_LINK" [label="BODY_LINK"];
+"LB_JIAN_LINK" [label="LB_JIAN_LINK"];
+"LB_THIGH_LINK" [label="LB_THIGH_LINK"];
+"LB_SHANK_LINK" [label="LB_SHANK_LINK"];
+"LB_R_LINK" [label="LB_R_LINK"];
+"LB_P_LINK" [label="LB_P_LINK"];
+"LB_Y_LINK" [label="LB_Y_LINK"];
+"LF_JIAN_LINK" [label="LF_JIAN_LINK"];
+"LF_THIGH_LINK" [label="LF_THIGH_LINK"];
+"LF_SHANK_LINK" [label="LF_SHANK_LINK"];
+"LF_R_LINK" [label="LF_R_LINK"];
+"LF_P_LINK" [label="LF_P_LINK"];
+"LF_Y_LINK" [label="LF_Y_LINK"];
+"RB_JIAN_LINK" [label="RB_JIAN_LINK"];
+"RB_THIGH_LINK" [label="RB_THIGH_LINK"];
+"RB_SHANK_LINK" [label="RB_SHANK_LINK"];
+"RB_R_LINK" [label="RB_R_LINK"];
+"RB_P_LINK" [label="RB_P_LINK"];
+"RB_Y_LINK" [label="RB_Y_LINK"];
+"RF_JIAN_LINK" [label="RF_JIAN_LINK"];
+"RF_THIGH_LINK" [label="RF_THIGH_LINK"];
+"RF_SHANK_LINK" [label="RF_SHANK_LINK"];
+"RF_R_LINK" [label="RF_R_LINK"];
+"RF_P_LINK" [label="RF_P_LINK"];
+"RF_Y_LINK" [label="RF_Y_LINK"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"BODY_LINK" -> "LB_JIAN_JOINT" [label="xyz: -0.1219 0.04805 -0.001 \nrpy: -1.5708 -0 1.5708"]
+"LB_JIAN_JOINT" -> "LB_JIAN_LINK"
+"LB_JIAN_LINK" -> "LB_THIGH_JOINT" [label="xyz: 0.05305 -0.0022197 -0.0034125 \nrpy: 1.5708 -0.013702 1.5708"]
+"LB_THIGH_JOINT" -> "LB_THIGH_LINK"
+"LB_THIGH_LINK" -> "LB_SHANK_JOINT" [label="xyz: 0.135 0 0 \nrpy: 0 0 -1.6215"]
+"LB_SHANK_JOINT" -> "LB_SHANK_LINK"
+"LB_SHANK_LINK" -> "LB_R_JOINT" [label="xyz: 0.12192 0.0045163 0 \nrpy: 1.5708 -0 0.037028"]
+"LB_R_JOINT" -> "LB_R_LINK"
+"LB_R_LINK" -> "LB_P_JOINT" [label="xyz: 0 0 0 \nrpy: 0 1.5708 -0"]
+"LB_P_JOINT" -> "LB_P_LINK"
+"LB_P_LINK" -> "LB_Y_JOINT" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"LB_Y_JOINT" -> "LB_Y_LINK"
+"BODY_LINK" -> "LF_JIAN_JOINT" [label="xyz: 0.1199 0.04805 -0.001 \nrpy: 1.5708 -0 1.5708"]
+"LF_JIAN_JOINT" -> "LF_JIAN_LINK"
+"LF_JIAN_LINK" -> "LF_THIGH_JOINT" [label="xyz: 0.05305 0 0 \nrpy: -1.5708 0.023282 -1.5708"]
+"LF_THIGH_JOINT" -> "LF_THIGH_LINK"
+"LF_THIGH_LINK" -> "LF_SHANK_JOINT" [label="xyz: 0.13499 -0.0012933 0 \nrpy: 0 0 -1.5941"]
+"LF_SHANK_JOINT" -> "LF_SHANK_LINK"
+"LF_SHANK_LINK" -> "LF_R_JOINT" [label="xyz: 0.122 0 0 \nrpy: 1.5708 -0 0"]
+"LF_R_JOINT" -> "LF_R_LINK"
+"LF_R_LINK" -> "LF_P_JOINT" [label="xyz: 0 0 0 \nrpy: 0 1.5708 -0"]
+"LF_P_JOINT" -> "LF_P_LINK"
+"LF_P_LINK" -> "LF_Y_JOINT" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"LF_Y_JOINT" -> "LF_Y_LINK"
+"BODY_LINK" -> "RB_JIAN_JOINT" [label="xyz: -0.1219 -0.04795 -0.001 \nrpy: 1.5708 -0 -1.5708"]
+"RB_JIAN_JOINT" -> "RB_JIAN_LINK"
+"RB_JIAN_LINK" -> "RB_THIGH_JOINT" [label="xyz: 0.05305 0 0 \nrpy: 1.5708 -0.0032563 -1.5708"]
+"RB_THIGH_JOINT" -> "RB_THIGH_LINK"
+"RB_THIGH_LINK" -> "RB_SHANK_JOINT" [label="xyz: 0.13499 0.0014101 0 \nrpy: 0 0 -1.5708"]
+"RB_SHANK_JOINT" -> "RB_SHANK_LINK"
+"RB_SHANK_LINK" -> "RB_R_JOINT" [label="xyz: 0.122 -0.00039727 0 \nrpy: 1.5708 2.1684e-19 -0.0032563"]
+"RB_R_JOINT" -> "RB_R_LINK"
+"RB_R_LINK" -> "RB_P_JOINT" [label="xyz: 0 0 0 \nrpy: 0 1.5708 -0"]
+"RB_P_JOINT" -> "RB_P_LINK"
+"RB_P_LINK" -> "RB_Y_JOINT" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"RB_Y_JOINT" -> "RB_Y_LINK"
+"BODY_LINK" -> "RF_JIAN_JOINT" [label="xyz: 0.1199 -0.04795 -0.001 \nrpy: -1.5708 0.021756 -1.5708"]
+"RF_JIAN_JOINT" -> "RF_JIAN_LINK"
+"RF_JIAN_LINK" -> "RF_THIGH_JOINT" [label="xyz: 0.053037 -0.001 0 \nrpy: -1.5708 -0.00052673 1.549"]
+"RF_THIGH_JOINT" -> "RF_THIGH_LINK"
+"RF_THIGH_LINK" -> "RF_SHANK_JOINT" [label="xyz: 0.13483 0.0019208 0 \nrpy: 0 0 -1.5703"]
+"RF_SHANK_JOINT" -> "RF_SHANK_LINK"
+"RF_SHANK_LINK" -> "RF_R_JOINT" [label="xyz: 0.122 0 0 \nrpy: 1.5708 -0 0"]
+"RF_R_JOINT" -> "RF_R_LINK"
+"RF_R_LINK" -> "RF_P_JOINT" [label="xyz: 0 0 0 \nrpy: 0 1.5708 -0"]
+"RF_P_JOINT" -> "RF_P_LINK"
+"RF_P_LINK" -> "RF_Y_JOINT" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"RF_Y_JOINT" -> "RF_Y_LINK"
+}
