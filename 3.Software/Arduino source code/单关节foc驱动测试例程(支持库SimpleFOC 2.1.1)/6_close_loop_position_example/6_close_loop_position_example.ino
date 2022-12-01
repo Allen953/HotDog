@@ -12,7 +12,7 @@
 // 电机极对数:11            减速比:11
 //in-line current sense - phase 1/A 35
 //in-line current sense - phase 1/C 34
-// ESP32  iic接口  SCL:26   SDA:25
+// ESP32  iic接口  SCL:25   SDA:26
 // AS5600 iic地址: 0x36
 //I2Cone.begin(sda, scl, frequency); 
 
@@ -32,7 +32,7 @@ TwoWire I2Cone = TwoWire(0);
 
 //电机参数
 BLDCMotor motor = BLDCMotor(11);
-BLDCDriver3PWM driver = BLDCDriver3PWM(17, 18, 19, 21, 22, 23);
+BLDCDriver3PWM driver = BLDCDriver3PWM(17, 19, 18, 21, 22, 23);
 
 //命令设置
 float target_velocity = 0;
@@ -40,7 +40,7 @@ Commander command = Commander(Serial);
 void doTarget(char* cmd) { command.scalar(&target_velocity, cmd); }
 
 void setup() {
-  I2Cone.begin(25, 26, 400000); 
+  I2Cone.begin(26, 25, 400000); 
   sensor.init(&I2Cone);
   //连接motor对象与传感器对象
   motor.linkSensor(&sensor);
@@ -63,7 +63,7 @@ void setup() {
   //角度P环设置 
   motor.P_angle.P = 20;
   //最大电机限制电机
-  motor.voltage_limit = 7.4;
+  motor.voltage_limit = 12.0;
   
   //速度低通滤波时间常数
   motor.LPF_velocity.Tf = 0.01;

@@ -12,7 +12,7 @@
 // 电机极对数:11            减速比:11
 //in-line current sense - phase 1/A 35
 //in-line current sense - phase 1/C 34
-// ESP32  iic接口  SCL:26   SDA:25
+// ESP32  iic接口  SCL:25   SDA:26
 // AS5600 iic地址: 0x36
 //I2Cone.begin(sda, scl, frequency); 
 

@@ -1,3 +1,22 @@
+// Deng's FOC 开环位置控制例程 测试库：SimpleFOC 2.1.1 测试硬件：灯哥开源FOC V1.0
+// 串口中输入"T+数字"设定两个电机的位置，如设置电机转到到180度，输入 "T3.14"（弧度制的180度）
+// 在使用自己的电机时，请一定记得修改默认极对数，即 BLDCMotor(7) 中的值，设置为自己的极对数数字
+// 程序默认设置的供电电压为 7.4V,用其他电压供电请记得修改 voltage_power_supply , voltage_limit 变量中的值
+//               FOC_0.2  Baize_Foc
+// IN1     pwm1     9        17
+// IN2     pwm2     6        18
+// IN3     pwm3     5        19
+// INH1   enable1   8        21
+// INH2   enable2   7        22
+// INH3   enable3   4        23
+// 电机极对数:11            减速比:11
+//in-line current sense - phase 1/A 35
+//in-line current sense - phase 1/C 34
+// ESP32  iic接口  SCL:25   SDA:26
+// AS5600 iic地址: 0x36
+//I2Cone.begin(sda, scl, frequency); 
+
+
 #include "WiFi.h"
 #include <ros.h>
 #include <std_msgs/String.h>
@@ -8,29 +27,18 @@
 #include <Wire.h>
 #include <SimpleFOC.h>
 
+#define rec 2.95
+#define dir 1
 
-int rec[18] = {
-  320,320,327,
-  327,345,310,
-  350,327,310,
-  350,327,337,
-  327,327,350,
-  350,340,320
-};
-int direct[18] = {1,1,1,
-1,1,1,
-1,1,1,
-1,1,1,
-1,1,1,
-1,1,1
-};
+MagneticSensorI2C sensor = MagneticSensorI2C(AS5600_I2C);
+TwoWire I2Cone = TwoWire(0);
 
 BLDCMotor motor = BLDCMotor(11);
-BLDCDriver3PWM driver = BLDCDriver3PWM(17, 18, 19, 21, 22, 23);
+BLDCDriver3PWM driver = BLDCDriver3PWM(17, 19, 18, 21, 22, 23);
 
 
-//目标变量
-float target_velocity = 0;
+//目标位置
+float target_position = 0;
 
 //设置AP信息(SSID和PASSWORD)
 const char* ssid = "S725";
@@ -75,19 +83,22 @@ class WiFiHardware {
 int i;
 
 void JointStateCallback(const robot_msg::quadrupedrobot_jointstate& jointstate) {
-  motor.move(jointstate.position[1]);
+  motor.loopFOC();
+  motor.move(jointstate.position[10]*10+rec);
 
+
+  Serial.println(sensor.getAngle());
   // We can now plot text on screen using the "print" class
   delay(1);
 }
  
  
 std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
+ros::Publisher chatter("chatter11", &str_msg);
 ros::Subscriber<robot_msg::quadrupedrobot_jointstate> subjoint("/quadruped_joint", JointStateCallback);
 
 ros::NodeHandle_<WiFiHardware> nh;
-char hello[20] = "ESP32 wifi alive!";
+char hello[20] = "Motor 11 alive!";
  
  
 void setupWiFi()
@@ -106,7 +117,47 @@ void setupWiFi()
 }
 
 void setup() {
+  I2Cone.begin(26, 25, 400000); 
+  sensor.init(&I2Cone);
+  //连接motor对象与传感器对象
+  motor.linkSensor(&sensor);
+  
   Serial.begin(115200);
+  //供电电压设置 [V]
+  driver.voltage_power_supply = 12.0;
+  driver.init();
+
+  //连接电机和driver对象
+  motor.linkDriver(&driver);
+  
+  //FOC模型选择
+  motor.foc_modulation = FOCModulationType::SpaceVectorPWM;
+  //运动控制模式设置
+  motor.controller = MotionControlType::angle;
+
+  //速度PI环设置
+  motor.PID_velocity.P = 0.2;
+  motor.PID_velocity.I = 20;
+  //角度P环设置 
+  motor.P_angle.P = 20;
+  //最大电机限制电机
+  motor.voltage_limit = 7.4;
+  
+  //速度低通滤波时间常数
+  motor.LPF_velocity.Tf = 0.01;
+
+  //设置最大速度限制
+  motor.velocity_limit = 60;
+
+  motor.useMonitoring(Serial);
+  
+  //初始化电机
+  motor.init();
+  //初始化 FOC
+  motor.initFOC();
+
+  Serial.println(F("Motor ready."));
+  
   setupWiFi();
   delay(2000);
   nh.initNode();
@@ -115,28 +166,9 @@ void setup() {
 
   delay(100);
 
-  pinMode(26,OUTPUT);
-  digitalWrite(26,HIGH);
-  pinMode(27,OUTPUT);
-  digitalWrite(27,HIGH);
-  pinMode(14,OUTPUT);
-  digitalWrite(14,HIGH);
-
-  driver.voltage_power_supply = 12.0;
-  driver.init();
-  motor.linkDriver(&driver);
-  motor.voltage_limit = 12.0;   // [V]
-  motor.velocity_limit = 15; // [rad/s]
   
-  //开环控制模式设置
-  motor.controller = MotionControlType::angle_openloop;
+  Serial.println(F("Set the target velocity using serial terminal:"));
 
-  //初始化硬件
-  motor.init();
-
-
-//  Serial.println("Motor ready!");
-//  Serial.println("Set target velocity [rad/s]");
   _delay(1000);
 }
  
