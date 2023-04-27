@@ -44,7 +44,7 @@ float target_position = 0;
 const char* ssid = "S725";
 const char* password = "s725s725";
 
-IPAddress server(192, 168, 1, 108); // ip of your ROS server
+IPAddress server(192, 168, 1, 111); // ip of your ROS server
 IPAddress ip_address;
 int status = WL_IDLE_STATUS;
 
@@ -57,7 +57,7 @@ class WiFiHardware {
  
   void init() {
     // do your initialization here. this probably includes TCP server/client setup
-    client.connect(server, 11412);
+    client.connect(server, 11422);
   }
  
   // read a byte from the serial port. -1 = failure
@@ -94,16 +94,16 @@ void JointStateCallback(const robot_msg::quadrupedrobot_jointstate& jointstate) 
  
  
 std_msgs::String str_msg;
-ros::Publisher chatter12("chatter12", &str_msg);
+ros::Publisher chatter12("BaizeJoint12", &str_msg);
 ros::Subscriber<robot_msg::quadrupedrobot_jointstate> subjoint("/quadruped_joint", JointStateCallback);
 
 ros::NodeHandle_<WiFiHardware> nh;
-char hello[20] = "Motor 12 alive!";
+char hello[20] = "Joint12 alive!";
  
  
 void setupWiFi()
 {
-  WiFi.setHostname("esp32-12");
+  WiFi.setHostname("BaizeJoint12");
   WiFi.begin(ssid, password);
   Serial.print("\nConnecting to "); Serial.println(ssid);
   uint8_t i = 0;

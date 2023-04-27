@@ -27,7 +27,7 @@
 #include <Wire.h>
 #include <SimpleFOC.h>
 
-#define rec 2.95
+#define rec 4.0
 #define dir 1
 
 MagneticSensorI2C sensor = MagneticSensorI2C(AS5600_I2C);
@@ -57,7 +57,7 @@ class WiFiHardware {
  
   void init() {
     // do your initialization here. this probably includes TCP server/client setup
-    client.connect(server, 11411);
+    client.connect(server, 11424);
   }
  
   // read a byte from the serial port. -1 = failure
@@ -91,19 +91,24 @@ void JointStateCallback(const robot_msg::quadrupedrobot_jointstate& jointstate) 
   // We can now plot text on screen using the "print" class
   delay(1);
 }
-
-
+ 
+ 
 std_msgs::String str_msg;
-ros::Publisher chatter("BaizeJoint1", &str_msg);
+ros::Publisher chatter("Arduino_ex1", &str_msg);
+std_msgs::String str_msg1;
+ros::Publisher chatter1("IMU1", &str_msg1);
+std_msgs::String str_msg2;
+ros::Publisher chatter2("Status", &str_msg2);
 ros::Subscriber<robot_msg::quadrupedrobot_jointstate> subjoint("/quadruped_joint", JointStateCallback);
 
 ros::NodeHandle_<WiFiHardware> nh;
-char hello[20] = "Joint1 alive!";
+char hello[20] = "arduino_ex1 alive!";
+
  
  
 void setupWiFi()
 {
-  WiFi.setHostname("BaizeJoint1");
+  WiFi.setHostname("arduino_ex1");
   WiFi.begin(ssid, password);
   Serial.print("\nConnecting to "); Serial.println(ssid);
   uint8_t i = 0;
@@ -142,7 +147,7 @@ void setup() {
   //角度P环设置 
   motor.P_angle.P = 20;
   //最大电机限制电机
-  motor.voltage_limit = 7.4;
+  motor.voltage_limit = 12.0;
   
   //速度低通滤波时间常数
   motor.LPF_velocity.Tf = 0.01;
@@ -163,6 +168,8 @@ void setup() {
   delay(2000);
   nh.initNode();
   nh.advertise(chatter);
+  nh.advertise(chatter1);
+  nh.advertise(chatter2);
   nh.subscribe(subjoint);
 
   delay(100);
@@ -175,7 +182,11 @@ void setup() {
  
 void loop() {
   str_msg.data = hello;
+  str_msg1.data = hello;
+  str_msg2.data = hello;
   chatter.publish( &str_msg );
+  chatter1.publish( &str_msg1 );
+  chatter2.publish( &str_msg2 );
   nh.spinOnce();
   delay(5);
 }
